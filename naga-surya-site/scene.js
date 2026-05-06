@@ -1077,16 +1077,21 @@ class NagaScene {
       const greenPulseVal = greenBase * greenEnvelope;
 
       // Parallax reflection target — moves opposite cursor direction across the gold,
-      // simulating a physical surface catching the spotlight.
-      const reflTargetX = 0.5 - this.cursor.x * 0.42;
-      const reflTargetY = 0.5 - this.cursor.y * 0.30;
+      // simulating a physical surface catching the spotlight. Kept subtle (0.18/0.12)
+      // so the sheen glides rather than sweeping hard across all surfaces at once.
+      const reflTargetX = 0.5 - this.cursor.x * 0.18;
+      const reflTargetY = 0.5 - this.cursor.y * 0.12;
       this._reflectUV.lerp(new THREE.Vector2(reflTargetX, reflTargetY), 0.08);
 
-      // Light direction — overhead spotlight, gently nudged by cursor for parallax kick
-      const lx = this.cursor.x * 0.30;
-      const ly = isMobile ? 0.5 + this.cursor.y * 0.45 : 0.95 + this.cursor.y * 0.09;
+      // Light direction — overhead spotlight, fixed to avoid shading phase shifts during parallax.
+      // Only a tiny x nudge (0.06) so the light feels slightly 3-dimensional without flickering.
+      if (!this._lightDirTarget) this._lightDirTarget = new THREE.Vector3(0, 1, 0.4).normalize();
+      const lx = this.cursor.x * 0.06;
+      const ly = isMobile ? 0.5 + this.cursor.y * 0.10 : 0.95 + this.cursor.y * 0.05;
       const lz = isMobile ? 0.9 : 0.40;
-      this.lightDir.set(lx, ly + (this.lightTilt || 0), lz).normalize();
+      this._lightDirTarget.set(lx, ly + (this.lightTilt || 0), lz).normalize();
+      // Smooth the light so it can never snap — interpolate at 3% per frame
+      this.lightDir.lerp(this._lightDirTarget, 0.03);
 
       // Push uniforms to all lit (relief) materials
       for (const mat of this.allLitMaterials) {
