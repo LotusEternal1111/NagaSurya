@@ -1,0 +1,90 @@
+{
+  "site": {
+    "title": "Naga Surya",
+    "tagline": "Solar Freedom — Harnessing Clean, Green Energy",
+    "fontDisplay": "Cinzel",
+    "fontBody": "Cormorant Garamond",
+    "nav": [
+      {
+        "id": "home",
+        "label": "HOME"
+      },
+      {
+        "id": "about",
+        "label": "ABOUT"
+      },
+      {
+        "id": "services",
+        "label": "SERVICES"
+      },
+      {
+        "id": "contact",
+        "label": "CONTACT"
+      }
+    ]
+  },
+  "pages": {
+    "home": {
+      "type": "hero",
+      "showMarble": true,
+      "showFoliage": true,
+      "showSun": true,
+      "showTitle": true,
+      "dragonOpacity": 1,
+      "lightTilt": 0
+    },
+    "about": {
+      "type": "sub",
+      "title": "About Naga Surya",
+      "subtitle": "The Sun Serpent",
+      "body": "Naga Surya weds the ancient symbol of the serpent — keeper of earth's hidden currents — to Surya, the solar fire that has fed every living thing for four billion years. We design, install, and steward solar systems that return that birthright to homes, farms, and villages. Our work is rooted, radiant, and built to last generations.",
+      "dragonPos": "left",
+      "dragonOpacity": 0.16,
+      "lightTilt": 10
+    },
+    "services": {
+      "type": "sub",
+      "title": "Services",
+      "subtitle": "What We Build",
+      "body": "Residential rooftop solar — sized to your bill, not the salesperson's quota. Off-grid and hybrid systems with battery banks tuned to your loads. Agricultural pumping and irrigation arrays. Community microgrids that keep clinics and schools running through the night. Maintenance contracts that include cleanings, monitoring, and a guarantee against drift.",
+      "dragonPos": "coiled",
+      "dragonOpacity": 0.14,
+      "lightTilt": -8
+    },
+    "contact": {
+      "type": "sub",
+      "title": "Contact",
+      "subtitle": "Begin the Conversation",
+      "body": "Tell us where you are and what you're trying to power. We'll come look, measure honestly, and quote in plain language — no hidden financing tricks. Site visits are free within the region; remote consultations are free everywhere.",
+      "email": "hello@nagasurya.solar",
+      "phone": "+1 (555) 014-7273",
+      "dragonPos": "peeking",
+      "dragonOpacity": 0.22,
+      "lightTilt": 0
+    }
+  },
+  "media": {
+    "heroImage": "assets/hero.png",
+    "heroPlate": "assets/layers/hero_plate.png",
+    "heroNormal": "assets/layers/hero_normal.png",
+    "sunMask": "assets/layers/sun_mask.png",
+    "dragonLeft": "assets/layers/dragon_left.png",
+    "dragonRight": "assets/layers/dragon_right.png",
+    "title": "assets/layers/title.png",
+    "foliage": "assets/layers/foliage.png",
+    "accent": "#d4a02a",
+    "heroAspect": 2.0698529411764706
+  },
+  "tweaks": {
+    "parallax": 15,
+    "lightDrift": 20,
+    "dragonHeadFollow": true,
+    "sunPulse": true,
+    "navGlow": true,
+    "panelShimmer": true,
+    "veinFlow": true,
+    "letterSettle": true,
+    "particleMotes": true,
+    "globeRotate": true
+  }
+}

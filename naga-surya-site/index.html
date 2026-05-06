@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Naga Surya — Solar Freedom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Three.js scene container -->
+  <div id="scene-root"></div>
+
+  <!-- DOM overlays (nav, copy, CMS) live above the canvas -->
+  <div id="ui-root"></div>
+
+  <!-- Splash -->
+  <div class="splash" id="splash"><div class="splash-mark">NAGA SURYA</div></div>
+
+  <!-- iOS tilt-permission chip — appears only on iOS Safari touch devices.
+       Visually a tiny golden sun with a soft halo and inner glow. Tap to grant
+       motion-sensor permission so tilt parallax can drive the scene. -->
+  <button id="tilt-chip" type="button" aria-label="Enable motion to tilt the scene" hidden>
+    <span class="tilt-sun">
+      <span class="tilt-sun-core"></span>
+      <span class="tilt-sun-rays"></span>
+    </span>
+    <span class="tilt-chip-label">tilt</span>
+  </button>
+
+  <!-- Page-wide radiant ripple layer — full-viewport overlay for sun-click pulses. -->
+  <div id="sun-ripple-layer" aria-hidden="true"></div>
+
+  <script>
+    // Wire tilt chip + sun-click ripple. Runs after scene.js boots and exposes
+    // window.__nagaRequestTilt + window.NagaScene singleton.
+    (function wireTiltAndRipple() {
+      const chip = document.getElementById('tilt-chip');
+      const tryShow = () => {
+        if (window.__nagaTiltNeedsPrompt) chip.hidden = false;
+      };
+      // Poll briefly for scene init
+      let tries = 0;
+      const t = setInterval(() => {
+        tryShow();
+        if (++tries > 20 || !chip.hidden) clearInterval(t);
+      }, 250);
+
+      chip.addEventListener('click', async () => {
+        if (window.__nagaRequestTilt) {
+          const ok = await window.__nagaRequestTilt();
+          if (ok) chip.classList.add('tilt-chip-active');
+          // Hide after attempt regardless — user can refresh if denied.
+          setTimeout(() => { chip.hidden = true; }, 600);
+        }
+      });
+
+      // Spawn DOM ripple when scene fires its event
+      const layer = document.getElementById('sun-ripple-layer');
+      window.addEventListener('naga:sun-ripple', () => {
+        const ring = document.createElement('div');
+        ring.className = 'sun-ripple-ring';
+        layer.appendChild(ring);
+        setTimeout(() => ring.remove(), 2400);
+      });
+    })();
+  </script>
+
+  <!-- Three.js (importmap so we can `import * as THREE from 'three'`) -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+    }
+  }
+  </script>
+
+  <!-- React + Babel for the UI/CMS layer -->
+  <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+
+  <!-- Bootstrap content config first, then load the scene + UI -->
+  <script>
+    window.NS_DEFAULT_CONFIG_URL = 'template.config.json';
+  </script>
+  <script type="module" src="scene.js"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel" src="ui.jsx"></script>
+</body>
+</html>
