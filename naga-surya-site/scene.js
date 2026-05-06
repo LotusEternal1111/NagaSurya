@@ -486,7 +486,7 @@ class NagaScene {
     this.allLitMaterials = [];
     this.transition = null;
     this.startTime = performance.now();
-    this.introStart = performance.now();   // 10s intro choreography clock
+    this.introStart = performance.now() - 11000;   // skip intro burst
     this.isHero = true;
     this._reflectUV = new THREE.Vector2(0.5, 0.5);
 
@@ -655,14 +655,14 @@ class NagaScene {
       // Shift the box slightly down so title above gets visual breathing room.
       this.box.position.y = -visibleH * 0.04;
     } else {
-      boxW = visibleW * 0.92;
+      boxW = visibleW * 0.82;
       boxH = boxW / heroAspect;
-      if (boxH > visibleH * 0.86) {
-        boxH = visibleH * 0.86;
+      if (boxH > visibleH * 0.74) {
+        boxH = visibleH * 0.74;
         boxW = boxH * heroAspect;
       }
       boxDepth = boxH * 0.14;
-      this.box.position.y = 0;
+      this.box.position.y = -visibleH * 0.03;
     }
 
     // Inner artwork (slightly smaller than box opening)
@@ -850,7 +850,7 @@ class NagaScene {
 
     this.lightTilt = (cfg.lightTilt || 0) * Math.PI / 180;
 
-    if (isHero) this.introStart = performance.now();
+    if (isHero) this.introStart = performance.now() - 11000;  // skip intro burst
     else        this.introStart = null;
 
     // Notify the DOM/UI that the active page has officially changed,
